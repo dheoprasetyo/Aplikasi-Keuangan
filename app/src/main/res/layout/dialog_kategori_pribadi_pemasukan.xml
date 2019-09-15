@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="300dp"
+    android:layout_height="400dp"
+    android:layout_gravity="center"
+    android:gravity="center">
+
+    <Button
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnGajiAslab"
+        android:text="Gaji Aslab"
+        android:background="@color/colorPrimary"
+        android:layout_marginBottom="20dp"/>
+    <Button
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnBonus"
+        android:text="Bonus"
+        android:background="@color/colorPrimary"
+        android:layout_marginBottom="20dp"/>
+    <Button
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnFreelancer"
+        android:text="Freelancer"
+        android:background="@color/colorPrimary"
+        android:layout_marginBottom="20dp"/>
+    <Button
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnOrtu"
+        android:text="Sumber Dari Orangtua"
+        android:background="@color/colorPrimary"
+        android:layout_marginBottom="20dp"/>
+    <Button
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnHasilUsaha"
+        android:text="Hasil Usaha"
+        android:background="@color/colorPrimary"
+        android:layout_marginBottom="20dp"/>
+    <Button
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnPaketData"
+        android:text="Paket Data"
+        android:background="@color/colorPrimary" />
+
+
+</LinearLayout>
