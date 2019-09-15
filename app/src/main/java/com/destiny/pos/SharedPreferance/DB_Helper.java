@@ -72,7 +72,7 @@ public class DB_Helper extends SQLiteOpenHelper {
         }
         return LinkedList;
     }
-    public List<Model> List() {
+    public List<Model> List(String deksripsi) {
         String query = "SELECT  * FROM " + TABLE_NAME;
 
         List<Model> LinkedList = new LinkedList<>();
@@ -111,10 +111,25 @@ public class DB_Helper extends SQLiteOpenHelper {
         db.insert(TABLE_NAME,null, values);
         db.close();
     }
-    public void deleteData(String id, Context context) {
+    public void deleteData(String id,Context context) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("DELETE FROM "+TABLE_NAME+" WHERE id='"+id+"'");
+        db.execSQL("DELETE FROM "+TABLE_NAME+" WHERE id= '"+id);
         Toast.makeText(context, "Data Berhasil Dihapus", Toast.LENGTH_SHORT).show();
+    }
+    public void updateData(Model model) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_DESKRIPSI, model.getDeskripsi());
+        values.put(COLUMN_TANGGAL, model.getTanggal());
+        values.put(COLUMN_TIPE, model.getTipe());
+        values.put(COLUMN_KATEGORI, model.getKategori());
+        values.put(COLUMN_JUMLAH, model.getJumlah());
+        values.put(COLUMN_JENIS, model.getJenis());
+        values.put(COLUMN_KETERANGAN,model.getKeterangan());
+
+        // insert
+        db.update(TABLE_NAME,values,COLUMN_ID+"="+model.getId(),null);
+        db.close();
     }
     public Cursor checkData(String id){
         SQLiteDatabase db = this.getWritableDatabase();

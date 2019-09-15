@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.destiny.pos.InputActivity;
 import com.destiny.pos.Model.Model;
 import com.destiny.pos.R;
 import com.destiny.pos.SharedPreferance.DB_Helper;
@@ -34,9 +36,9 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
     // you provide access to all the views for a data item in a view holder
     public class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
-        public TextView deskripsi,tanggal,tipe,kategori,jumlah,keterangan;
+        public TextView deskripsi,tanggal,tipe,kategori,jumlah,keterangan,jenis;
         public Button delete,update;
-
+        public LinearLayout linearJenis;
 
         public View layout;
 
@@ -48,6 +50,8 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
             tipe=(TextView)v.findViewById(R.id.tvTipe);
             kategori=(TextView)v.findViewById(R.id.tvKategori);
             jumlah=(TextView)v.findViewById(R.id.tvJumlah);
+            jenis=(TextView)v.findViewById(R.id.tvJenis);
+            linearJenis=(LinearLayout)v.findViewById(R.id.linearJenis);
             keterangan=(TextView)v.findViewById(R.id.tvKeterangan);
             delete=(Button)v.findViewById(R.id.btnDelete);
             update=(Button)v.findViewById(R.id.btnUpdate);
@@ -100,6 +104,11 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
         holder.kategori.setText(model.getKategori());
         holder.jumlah.setText(model.getJumlah());
         holder.keterangan.setText(model.getKeterangan());
+        if (model.getDeskripsi().equals("Pribadi")){
+            holder.linearJenis.setVisibility(View.GONE);
+        }else{
+            holder.jenis.setText(model.getJenis());
+        }
         dbHelper = new DB_Helper(mContext);
         holder.delete.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,69 +122,19 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
         holder.update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent goInput = new Intent(mContext, InputActivity.class);
+                goInput.putExtra("IO","Update");
+                goInput.putExtra("ID",model.getId());
+                goInput.putExtra("DESKRIPSI",model.getDeskripsi());
+                goInput.putExtra("TANGGAL",model.getTanggal());
+                goInput.putExtra("TIPE",model.getTipe());
+                goInput.putExtra("KATEGORI",model.getKategori());
+                goInput.putExtra("JUMLAH",model.getJumlah());
+                goInput.putExtra("JENIS",model.getJenis());
+                goInput.putExtra("KETERANGAN",model.getKeterangan());
+                mContext.startActivities(new Intent[]{goInput});
             }
         });
-        //listen to single view layout click
-//        holder.layout.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-//                builder.setMessage("Apakah Anda Yakin ingin menghapus Pahlawan Favorite Anda ??")
-//                        .setCancelable(false)
-//                        .setPositiveButton("Iya", new DialogInterface.OnClickListener() {
-//                            public void onClick(DialogInterface dialog, int id) {
-//                                DB_Helper dbHelper = new DB_Helper(mContext);
-//                                dbHelper.deletePahlawanRecord(pahlawan.getNama(),mContext);
-//                                Intent goInput = new Intent(mContext, DashboardActivity.class);
-//                                goInput.putExtra("LIST","123");
-//                                goInput.putExtra("DATA","All");
-//                                mContext.startActivities(new Intent[]{goInput});
-//                            }
-//                        })
-//                        .setNegativeButton("Tidak", new DialogInterface.OnClickListener() {
-//                            public void onClick(DialogInterface dialog, int id) {
-//                                dialog.cancel();
-//                            }
-//                        })
-//                        //Set your icon here
-//                        .setTitle("Perhatian !!!")
-//                        .setIcon(R.drawable.ic_close_black_24dp);
-//                AlertDialog alert = builder.create();
-//                alert.show();
-//            }
-//        });
-//        holder.Left.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent goInput = new Intent(mContext, DashboardActivity.class);
-//                goInput.putExtra("DetailExtra","detail");
-//                goInput.putExtra("Nama",pahlawan.getNama());
-//                goInput.putExtra("Remarks",pahlawan.getRemarks());
-//                goInput.putExtra("Photo",pahlawan.getPhoto());
-//                goInput.putExtra("Detail",pahlawan.getDetail());
-//                goInput.putExtra("Lahir",pahlawan.getLahir());
-//                goInput.putExtra("Wafat",pahlawan.getWafat());
-//                goInput.putExtra("Lang",pahlawan.getLangitude());
-//                goInput.putExtra("Long",pahlawan.getLongitude());
-//                mContext.startActivities(new Intent[]{goInput});
-//            }
-//        });
-//        holder.Right.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent goInput = new Intent(mContext, MapsActivity.class);
-//                goInput.putExtra("Nama",pahlawan.getNama());
-//                goInput.putExtra("Remarks",pahlawan.getRemarks());
-//                goInput.putExtra("Photo",pahlawan.getPhoto());
-//                goInput.putExtra("Detail",pahlawan.getDetail());
-//                goInput.putExtra("Lahir",pahlawan.getLahir());
-//                goInput.putExtra("Wafat",pahlawan.getWafat());
-//                goInput.putExtra("Lang",pahlawan.getLangitude());
-//                goInput.putExtra("Long",pahlawan.getLongitude());
-//                mContext.startActivities(new Intent[]{goInput});
-//            }
-//        });
     }
 
     // Return the size of your dataset (invoked by the layout manager)

@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this,UtamaActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
         Help.setOnClickListener(new View.OnClickListener() {
@@ -29,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this,HelpActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
         Tentang.setOnClickListener(new View.OnClickListener() {
@@ -36,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this,TentangActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
         Laporan.setOnClickListener(new View.OnClickListener() {
@@ -43,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this,LaporanActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
     }

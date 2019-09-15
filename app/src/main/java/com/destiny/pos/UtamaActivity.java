@@ -57,8 +57,10 @@ public class UtamaActivity extends AppCompatActivity {
         InputData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(UtamaActivity.this,InputActivity.class);
-                startActivity(intent);
+                Intent goInput = new Intent(UtamaActivity.this, InputActivity.class);
+                goInput.putExtra("IO","INPUT");
+                UtamaActivity.this.startActivities(new Intent[]{goInput});
+                finish();
             }
         });
         Home.setOnClickListener(new View.OnClickListener() {
@@ -66,6 +68,7 @@ public class UtamaActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(UtamaActivity.this,MainActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
         Help.setOnClickListener(new View.OnClickListener() {
@@ -73,6 +76,7 @@ public class UtamaActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(UtamaActivity.this,HelpActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
     }
@@ -81,6 +85,7 @@ public class UtamaActivity extends AppCompatActivity {
         dbHelper = new DB_Helper(this);
         recycler.setLayoutManager(new LinearLayoutManager(this));
         DataAdapter dataAdapter = new DataAdapter(dbHelper.ListDeskripsii(Deskripsi.getText().toString()),this,recycler);
+        //DataAdapter dataAdapter = new DataAdapter(dbHelper.List(Deskripsi.getText().toString()),this,recycler);
         recycler.setAdapter(dataAdapter);
         Cursor cursorPengeluaran = dbHelper.Hitung("Pengeluaran",Deskripsi.getText().toString());
         String pengeluaran = null;

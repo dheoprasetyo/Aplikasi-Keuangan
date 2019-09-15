@@ -23,13 +23,14 @@ import java.text.DateFormat;
 import java.util.Calendar;
 
 public class InputActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
-    Button Tanggal,Deskripsi,Tipe,Jenis,Kategori,Save,Cancel,Pribadi,Usaha,Pengeluaran,Pemasukan,Transportasi,Pulsa,PaketData,TokenListrik,Lunas,Hutang,Fotocopy,Makan;
+    Button Tanggal,Deskripsi,Tipe,Jenis,Kategori,Save,Cancel,Pribadi,DLL,Usaha,Pengeluaran,Pemasukan,Transportasi,Pulsa,PaketData,TokenListrik,Lunas,Hutang,Fotocopy,Makan;
     Button GajiAslab,Bonus,Freelancer,SumberDariOrtu,HasilUsaha;
     EditText Jumlah,Keterangan;
     ImageView Home,Utama,Help;
     DB_Helper dbHelper;
     Dialog dialogDeskkripsi,dialogTipe,dialogkategori,dialogJenis,dialogPribadiKeluaran,dialogPribadiPemasukan;
     LinearLayout linearJenis;
+    String id=null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,8 +48,29 @@ public class InputActivity extends AppCompatActivity implements DatePickerDialog
         Utama=(ImageView)findViewById(R.id.ivMenuUtama);
         Help=(ImageView)findViewById(R.id.ivMenuHelp);
         linearJenis=(LinearLayout)findViewById(R.id.linearJenis);
-
-
+        Intent data = getIntent();
+        //Get IntentData
+        final String IO = data.getStringExtra("IO");
+        if (IO.equals("Update")){
+            id = data.getStringExtra("ID");
+            final String deskripsi = data.getStringExtra("DESKRIPSI");
+            final String tanggal = data.getStringExtra("TANGGAL");
+            final String tipe = data.getStringExtra("TIPE");
+            final String kategori = data.getStringExtra("KATEGORI");
+            final String jumlah = data.getStringExtra("JUMLAH");
+            final String jenis = data.getStringExtra("JENIS");
+            final String keterangan = data.getStringExtra("KETERANGAN");
+            Deskripsi.setText(deskripsi);
+            Tanggal.setText(tanggal);
+            Tipe.setText(tipe);
+            Kategori.setText(kategori);
+            Jumlah.setText(jumlah);
+            Jenis.setText(jenis);
+            Keterangan.setText(keterangan);
+            Save.setText("Update");
+        }else{
+            Save.setText("Save");
+        }
         //Deskripsi
         dialogDeskkripsi = new Dialog(InputActivity.this);
         dialogDeskkripsi.setContentView(R.layout.dialog_deskripsi);
@@ -213,15 +235,15 @@ public class InputActivity extends AppCompatActivity implements DatePickerDialog
                 }else{
                     dialogkategori = new Dialog(InputActivity.this);
                     dialogkategori.setContentView(R.layout.dialog_kategori);
-                    Transportasi = (Button)dialogkategori.findViewById(R.id.btnTransportasi);
+                    DLL = (Button)dialogkategori.findViewById(R.id.btnDLL);
                     Pulsa= (Button)dialogkategori.findViewById(R.id.btnPulsa);
                     PaketData = (Button)dialogkategori.findViewById(R.id.btnPaketData);
                     TokenListrik = (Button)dialogkategori.findViewById(R.id.btnTokenListrik);
                     dialogkategori.show();
-                    Transportasi.setOnClickListener(new View.OnClickListener() {
+                    DLL.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            Kategori.setText("Transportasi");
+                            Kategori.setText("Dan Lain Lain");
                             dialogkategori.hide();
                         }
                     });
@@ -296,32 +318,44 @@ public class InputActivity extends AppCompatActivity implements DatePickerDialog
                 }else if(Keterangan.getText().toString().isEmpty()){
                     Toast.makeText(InputActivity.this, "Isi Keterangan !!", Toast.LENGTH_SHORT).show();
                 }else{
-                    dbHelper = new DB_Helper(InputActivity.this);
-                    Cursor cursor = dbHelper.Checker();
-                    String id = null;
-                    while (cursor.moveToNext()){
-                        id=cursor.getString(0);
-                    }
-                    if (id==null){
-                        id="0";
-                    }else{
-                        int intID = Integer.parseInt(id);
-                        id=String.valueOf(intID+1);
-                    }
-                    Model model;
-                    if (Deskripsi.equals("Usaha")){
-                        model = new Model(id,Deskripsi.getText().toString(),Tanggal.getText().toString(),
+                    if (IO.equals("Update")){
+                        dbHelper = new DB_Helper(InputActivity.this);
+                        Model model = new Model(id,Deskripsi.getText().toString(),Tanggal.getText().toString(),
                                 Tipe.getText().toString(),Kategori.getText().toString(),
                                 Jumlah.getText().toString(),Jenis.getText().toString(),Keterangan.getText().toString());
+                        dbHelper.updateData(model);
+                        //Toast.makeText(InputActivity.this, Deskripsi.getText().toString(), Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(InputActivity.this,"Data Berhasil Diupdate",Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(InputActivity.this,UtamaActivity.class);
+                        startActivity(intent);
                     }else{
-                        model = new Model(id,Deskripsi.getText().toString(),Tanggal.getText().toString(),
-                                Tipe.getText().toString(),Kategori.getText().toString(),
-                                Jumlah.getText().toString(),"Pribadi",Keterangan.getText().toString());
+                        dbHelper = new DB_Helper(InputActivity.this);
+                        Cursor cursor = dbHelper.Checker();
+                        while (cursor.moveToNext()){
+                            id=cursor.getString(0);
+                        }
+                        if (id==null){
+                            id="0";
+                        }else{
+                            int intID = Integer.parseInt(id);
+                            id=String.valueOf(intID+1);
+                        }
+                        Model model;
+                        if (Deskripsi.equals("Usaha")){
+                            model = new Model(id,Deskripsi.getText().toString(),Tanggal.getText().toString(),
+                                    Tipe.getText().toString(),Kategori.getText().toString(),
+                                    Jumlah.getText().toString(),Jenis.getText().toString(),Keterangan.getText().toString());
+                        }else{
+                            model = new Model(id,Deskripsi.getText().toString(),Tanggal.getText().toString(),
+                                    Tipe.getText().toString(),Kategori.getText().toString(),
+                                    Jumlah.getText().toString(),"Pribadi",Keterangan.getText().toString());
+                        }
+                        dbHelper.InsertData(model);
+                        Toast.makeText(InputActivity.this,"Data Berhasil Ditambahkan",Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(InputActivity.this,UtamaActivity.class);
+                        startActivity(intent);
+                        finish();
                     }
-                    dbHelper.InsertData(model);
-                    Toast.makeText(InputActivity.this,"Data Berhasil Ditambahkan",Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(InputActivity.this,UtamaActivity.class);
-                    startActivity(intent);
                 }
             }
         });
@@ -330,6 +364,7 @@ public class InputActivity extends AppCompatActivity implements DatePickerDialog
             public void onClick(View view) {
                 Intent intent = new Intent(InputActivity.this,UtamaActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
         Home.setOnClickListener(new View.OnClickListener() {
@@ -337,6 +372,7 @@ public class InputActivity extends AppCompatActivity implements DatePickerDialog
             public void onClick(View view) {
                 Intent intent = new Intent(InputActivity.this,MainActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
         Help.setOnClickListener(new View.OnClickListener() {
@@ -344,6 +380,7 @@ public class InputActivity extends AppCompatActivity implements DatePickerDialog
             public void onClick(View view) {
                 Intent intent = new Intent(InputActivity.this,HelpActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
     }

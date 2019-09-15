@@ -21,6 +21,7 @@ public class HelpActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(HelpActivity.this,MainActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
         String text = "1.Pilih Menu<br>" +

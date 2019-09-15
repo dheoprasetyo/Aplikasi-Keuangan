@@ -14,7 +14,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="250dp"
         android:id="@+id/ListBanner">
         <LinearLayout
             android:layout_width="match_parent"
@@ -110,6 +110,25 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:text="50000"
+                    android:gravity="right"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:id="@+id/linearJenis">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="Jenis"
+                    android:gravity="left"/>
+                <TextView
+                    android:id="@+id/tvJenis"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="LUNAS"
                     android:gravity="right"/>
             </LinearLayout>
             <LinearLayout

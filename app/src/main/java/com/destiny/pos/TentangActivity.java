@@ -21,12 +21,13 @@ public class TentangActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(TentangActivity.this,MainActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
         String text = "Aplikasi Dibuat Oleh : <br>" +
-                "Nama  : ....<br>" +
-                "NPM   : ....<br>" +
-                "Kelas : ....<br>";
+                "Nama  : Sherien Trisnawaty<br>" +
+                "NPM   : 56416999<br>" +
+                "Kelas : 3IA07<br>";
 
         WebView webView = (WebView)findViewById(R.id.webview);
         webView.loadData("<p style\"text-align: justify\">"+text+"</p>","text/html","UTF-8");

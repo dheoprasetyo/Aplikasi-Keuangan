@@ -64,6 +64,7 @@ public class LaporanActivity extends AppCompatActivity {
     Models keterangan;
     DB_Helper dbHelper;
     TextView pengeluaranPribadi,pemasukanPribadi,selisihPribadi,pengeluaranUsaha,pemasukanUsaha,selisihUsaha;
+    ImageView Home,Utama,Help;
     Button export;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,11 +78,42 @@ public class LaporanActivity extends AppCompatActivity {
         pemasukanUsaha=(TextView)findViewById(R.id.tvPengeluaranUsaha);
         selisihUsaha=(TextView)findViewById(R.id.tvSelisihUsaha);
         export=(Button)findViewById(R.id.exoirtExcel);
+        Home=(ImageView)findViewById(R.id.ivMenuHome);
+        Utama=(ImageView)findViewById(R.id.ivMenuUtama);
+        Help=(ImageView)findViewById(R.id.ivMenuHelp);
+        pribadi();
+        usaha();
         giftitemPOJO = new Models();
         DoLOgin doLOgin=new DoLOgin();
         doLOgin.execute();
-        pribadi();
-        usaha();
+        export.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    createPdfWrapper();
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (DocumentException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        Home.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(LaporanActivity.this,MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+        Help.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(LaporanActivity.this,HelpActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 
     private void pribadi(){
@@ -107,20 +139,8 @@ public class LaporanActivity extends AppCompatActivity {
         }
         pemasukanPribadi.setText(String.valueOf(Masuk));
         pengeluaranPribadi.setText(String.valueOf(Luar));
-        int selisih = Integer.parseInt(pemasukanPribadi.getText().toString())-Integer.parseInt(pengeluaranPribadi.getText().toString());
+        int selisih = Masuk-Luar;
         selisihPribadi.setText(String.valueOf(selisih));
-        export.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-                    createPdfWrapper();
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (DocumentException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
     }
 
     private void usaha(){
@@ -146,8 +166,9 @@ public class LaporanActivity extends AppCompatActivity {
         }
         pemasukanUsaha.setText(String.valueOf(Masuk));
         pengeluaranUsaha.setText(String.valueOf(Luar));
-        int selisih = Integer.parseInt(pemasukanUsaha.getText().toString())-Integer.parseInt(pengeluaranUsaha.getText().toString());
-        selisihPribadi.setText(String.valueOf(selisih));
+        int selisih = Masuk-Luar;
+        selisihUsaha.setText(String.valueOf(selisih));
+
     }
 
 
@@ -195,12 +216,11 @@ public class LaporanActivity extends AppCompatActivity {
             docsFolder.mkdir();
             Log.i(TAG, "Created a new directory for PDF");
         }
-
         String pdfname = "POS.pdf";
         pdfFile = new File(docsFolder.getAbsolutePath(), pdfname);
         OutputStream output = new FileOutputStream(pdfFile);
         Document document = new Document(PageSize.A4);
-        PdfPTable table = new PdfPTable(new float[]{3, 3, 3, 3, 3});
+        PdfPTable table = new PdfPTable(new float[]{3, 3, 3, 3, 3, 3, 3});
         table.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER);
         table.getDefaultCell().setFixedHeight(50);
         table.setTotalWidth(PageSize.A4.getWidth());
@@ -249,8 +269,8 @@ public class LaporanActivity extends AppCompatActivity {
         document.open();
         Font f = new Font(Font.FontFamily.TIMES_ROMAN, 30.0f, Font.UNDERLINE, BaseColor.BLUE);
         Font g = new Font(Font.FontFamily.TIMES_ROMAN, 20.0f, Font.NORMAL, BaseColor.BLUE);
-        document.add(new Paragraph("Pdf Data \n\n", f));
-        document.add(new Paragraph("Pdf File Through Itext", g));
+        document.add(new Paragraph("Aplikasi Keuangan \n", g));
+        document.add(new Paragraph("Untuk Mahasiswa \n", g));
         document.add(table);
 
 //        for (int i = 0; i < MyList1.size(); i++) {
@@ -270,6 +290,7 @@ public class LaporanActivity extends AppCompatActivity {
             Intent intent = new Intent();
             intent.setAction(Intent.ACTION_VIEW);
             Uri uri = Uri.fromFile(pdfFile);
+            Toast.makeText(this, "Laporan di Save dalam document/KeuanganMahasiswa", Toast.LENGTH_SHORT).show();
 //            intent.setDataAndType(uri, "application/pdf");
 //            this.startActivity(intent);
         } else {
@@ -300,8 +321,6 @@ public class LaporanActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Object o) {
             super.onPostExecute(o);
-
-
         }
     }
 }
