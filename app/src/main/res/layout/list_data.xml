@@ -170,7 +170,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Update"
-                            android:background="@color/colorGreen"
+                            android:background="@color/colorBlue"
                             android:textColor="@color/colorWhite"/>
                     </LinearLayout>
 
@@ -187,7 +187,7 @@
                         android:layout_height="match_parent">
                         <Button
                             android:id="@+id/btnDelete"
-                            android:background="@color/colorGreen"
+                            android:background="@color/colorRed"
                             android:textColor="@color/colorWhite"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
