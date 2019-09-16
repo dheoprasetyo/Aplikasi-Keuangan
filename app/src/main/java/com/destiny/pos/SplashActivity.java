@@ -12,14 +12,8 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-
-        final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            public void run() {
-                changeActivity();
-                finish();
-            }
-        }, 0); //3000 L = 3 detik
+        changeActivity();
+        finish();
     }
     private void changeActivity(){
         Intent intent = new Intent(this,MainActivity.class);

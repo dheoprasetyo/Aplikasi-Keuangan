@@ -48,6 +48,8 @@ public class DB_Helper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
         this.onCreate(db);
     }
+
+    //Method Listing
     public List<Model> ListDeskripsii(String deksripsi) {
         String query = "SELECT * FROM "+TABLE_NAME+" WHERE "+COLUMN_DESKRIPSI+" = '"+deksripsi+"'";
 
@@ -72,30 +74,8 @@ public class DB_Helper extends SQLiteOpenHelper {
         }
         return LinkedList;
     }
-    public List<Model> List(String deksripsi) {
-        String query = "SELECT  * FROM " + TABLE_NAME;
 
-        List<Model> LinkedList = new LinkedList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery(query, null);
-        Model model;
-
-        if (cursor.moveToFirst()) {
-            do {
-                model = new Model();
-                model.setId(cursor.getString(cursor.getColumnIndex(COLUMN_ID)));
-                model.setDeskripsi(cursor.getString(cursor.getColumnIndex(COLUMN_DESKRIPSI)));
-                model.setTanggal(cursor.getString(cursor.getColumnIndex(COLUMN_TANGGAL)));
-                model.setTipe(cursor.getString(cursor.getColumnIndex(COLUMN_TIPE)));
-                model.setKategori(cursor.getString(cursor.getColumnIndex(COLUMN_KATEGORI)));
-                model.setJumlah(cursor.getString(cursor.getColumnIndex(COLUMN_JUMLAH)));
-                model.setJenis(cursor.getString(cursor.getColumnIndex(COLUMN_JENIS)));
-                model.setKeterangan(cursor.getString(cursor.getColumnIndex(COLUMN_KETERANGAN)));
-                LinkedList.add(model);
-            } while (cursor.moveToNext());
-        }
-        return LinkedList;
-    }
+    //Method Insert SQLite
     public void InsertData(Model model) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -111,11 +91,13 @@ public class DB_Helper extends SQLiteOpenHelper {
         db.insert(TABLE_NAME,null, values);
         db.close();
     }
+    //Method Delete Sqlite
     public void deleteData(String id,Context context) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("DELETE FROM "+TABLE_NAME+" WHERE id= '"+id);
+        db.execSQL("DELETE FROM "+TABLE_NAME+" WHERE id= '"+id+"'");
         Toast.makeText(context, "Data Berhasil Dihapus", Toast.LENGTH_SHORT).show();
     }
+    //Method Update SQlite
     public void updateData(Model model) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -131,27 +113,18 @@ public class DB_Helper extends SQLiteOpenHelper {
         db.update(TABLE_NAME,values,COLUMN_ID+"="+model.getId(),null);
         db.close();
     }
-    public Cursor checkData(String id){
-        SQLiteDatabase db = this.getWritableDatabase();
-        String query ="SELECT * FROM "+TABLE_NAME+" WHERE id = '"+id+"'";
-        Cursor cursor = db.rawQuery(query,null);
-        return cursor;
-    }
+
+    //Method Check SQLite
     public Cursor Checker(){
         SQLiteDatabase db = this.getWritableDatabase();
         String query ="SELECT * FROM "+TABLE_NAME;
         Cursor cursor = db.rawQuery(query,null);
         return cursor;
     }
+    //Method Menghitung
     public Cursor Hitung(String tipe,String deskripsi){
         SQLiteDatabase db = this.getWritableDatabase();
         String query ="SELECT * FROM "+TABLE_NAME+" WHERE "+COLUMN_TIPE+" = '"+tipe+"' AND "+COLUMN_DESKRIPSI+" = '"+deskripsi+"'";
-        Cursor cursor = db.rawQuery(query,null);
-        return cursor;
-    }
-    public Cursor hitung(String deskripsi){
-        SQLiteDatabase db = this.getWritableDatabase();
-        String query ="SELECT SUM("+COLUMN_JUMLAH+") AS total FROM "+TABLE_NAME+" WHERE "+COLUMN_TIPE+" = '"+deskripsi+"' ";
         Cursor cursor = db.rawQuery(query,null);
         return cursor;
     }

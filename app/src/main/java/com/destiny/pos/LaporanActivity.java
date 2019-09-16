@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -22,8 +21,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.destiny.pos.Model.GiftitemPOJO;
-import com.destiny.pos.Model.Model;
 import com.destiny.pos.Model.Models;
 import com.destiny.pos.SharedPreferance.DB_Helper;
 import com.itextpdf.text.BaseColor;
@@ -43,9 +40,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -75,7 +69,7 @@ public class LaporanActivity extends AppCompatActivity {
         pemasukanPribadi=(TextView)findViewById(R.id.tvPemasukanPribadi);
         selisihPribadi=(TextView)findViewById(R.id.tvSelisihPribadi);
         pengeluaranUsaha=(TextView)findViewById(R.id.tvPengeluaranUsaha);
-        pemasukanUsaha=(TextView)findViewById(R.id.tvPengeluaranUsaha);
+        pemasukanUsaha=(TextView)findViewById(R.id.tvPemasukanUsaha);
         selisihUsaha=(TextView)findViewById(R.id.tvSelisihUsaha);
         export=(Button)findViewById(R.id.exoirtExcel);
         Home=(ImageView)findViewById(R.id.ivMenuHome);
@@ -209,14 +203,14 @@ public class LaporanActivity extends AppCompatActivity {
                 .show();
     }
 
+    //Method Membuat PDF
     private void createPdf() throws FileNotFoundException, DocumentException {
-
         File docsFolder = new File(Environment.getExternalStorageDirectory() + "/Documents");
         if (!docsFolder.exists()) {
             docsFolder.mkdir();
             Log.i(TAG, "Created a new directory for PDF");
         }
-        String pdfname = "POS.pdf";
+        String pdfname = "Aplikasi Keuangan Mahasiswa.pdf";
         pdfFile = new File(docsFolder.getAbsolutePath(), pdfname);
         OutputStream output = new FileOutputStream(pdfFile);
         Document document = new Document(PageSize.A4);
@@ -251,7 +245,7 @@ public class LaporanActivity extends AppCompatActivity {
             String tipen = tipe.getTipe();
             String kategorin = kategori.getKategori();
             String jumlahn = jumlah.getJumlah();
-            String jenisn = jenis.getJumlah();
+            String jenisn = jenis.getJenis();
             String keterangann = keterangan.getKeterangan();
 
             table.addCell(String.valueOf(deskripsin));
@@ -263,19 +257,15 @@ public class LaporanActivity extends AppCompatActivity {
             table.addCell(String.valueOf(keterangann));
         }
 
-//        System.out.println("Done");
 
         PdfWriter.getInstance(document, output);
         document.open();
         Font f = new Font(Font.FontFamily.TIMES_ROMAN, 30.0f, Font.UNDERLINE, BaseColor.BLUE);
         Font g = new Font(Font.FontFamily.TIMES_ROMAN, 20.0f, Font.NORMAL, BaseColor.BLUE);
         document.add(new Paragraph("Aplikasi Keuangan \n", g));
-        document.add(new Paragraph("Untuk Mahasiswa \n", g));
+        document.add(new Paragraph("Untuk Mahasiswa \n\n\n", g));
         document.add(table);
 
-//        for (int i = 0; i < MyList1.size(); i++) {
-//            document.add(new Paragraph(String.valueOf(MyList1.get(i))));
-//        }
         document.close();
         Log.e("safiya", MyList1.toString());
         previewPdf();
@@ -290,7 +280,7 @@ public class LaporanActivity extends AppCompatActivity {
             Intent intent = new Intent();
             intent.setAction(Intent.ACTION_VIEW);
             Uri uri = Uri.fromFile(pdfFile);
-            Toast.makeText(this, "Laporan di Save dalam document/KeuanganMahasiswa", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Laporan di Save dalam document/Aplikasi Keuangan Mahasiswa.pdf", Toast.LENGTH_SHORT).show();
 //            intent.setDataAndType(uri, "application/pdf");
 //            this.startActivity(intent);
         } else {

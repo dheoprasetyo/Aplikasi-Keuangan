@@ -68,6 +68,9 @@ public class InputActivity extends AppCompatActivity implements DatePickerDialog
             Jenis.setText(jenis);
             Keterangan.setText(keterangan);
             Save.setText("Update");
+            if (deskripsi.equals("Usaha")){
+                linearJenis.setVisibility(View.VISIBLE);
+            }
         }else{
             Save.setText("Save");
         }
@@ -138,7 +141,6 @@ public class InputActivity extends AppCompatActivity implements DatePickerDialog
                         dialogPribadiPemasukan = new Dialog(InputActivity.this);
                         dialogPribadiPemasukan.setContentView(R.layout.dialog_kategori_pribadi_pemasukan);
                         GajiAslab=(Button)dialogPribadiPemasukan.findViewById(R.id.btnGajiAslab);
-                        Bonus=(Button)dialogPribadiPemasukan.findViewById(R.id.btnBonus);
                         Freelancer=(Button)dialogPribadiPemasukan.findViewById(R.id.btnFreelancer);
                         SumberDariOrtu=(Button)dialogPribadiPemasukan.findViewById(R.id.btnOrtu);
                         HasilUsaha=(Button)dialogPribadiPemasukan.findViewById(R.id.btnHasilUsaha);
@@ -147,13 +149,6 @@ public class InputActivity extends AppCompatActivity implements DatePickerDialog
                             @Override
                             public void onClick(View view) {
                                 Kategori.setText("Gaji Aslab");
-                                dialogPribadiPemasukan.hide();
-                            }
-                        });
-                        Bonus.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                Kategori.setText("Bonus");
                                 dialogPribadiPemasukan.hide();
                             }
                         });
@@ -296,7 +291,7 @@ public class InputActivity extends AppCompatActivity implements DatePickerDialog
             @Override
             public void onClick(View view) {
                 Jenis.setText("Hutang");
-                dialogTipe.hide();
+                dialogJenis.hide();
             }
         });
 
@@ -324,8 +319,6 @@ public class InputActivity extends AppCompatActivity implements DatePickerDialog
                                 Tipe.getText().toString(),Kategori.getText().toString(),
                                 Jumlah.getText().toString(),Jenis.getText().toString(),Keterangan.getText().toString());
                         dbHelper.updateData(model);
-                        //Toast.makeText(InputActivity.this, Deskripsi.getText().toString(), Toast.LENGTH_SHORT).show();
-                        //Toast.makeText(InputActivity.this,"Data Berhasil Diupdate",Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(InputActivity.this,UtamaActivity.class);
                         startActivity(intent);
                     }else{
@@ -341,15 +334,9 @@ public class InputActivity extends AppCompatActivity implements DatePickerDialog
                             id=String.valueOf(intID+1);
                         }
                         Model model;
-                        if (Deskripsi.equals("Usaha")){
-                            model = new Model(id,Deskripsi.getText().toString(),Tanggal.getText().toString(),
-                                    Tipe.getText().toString(),Kategori.getText().toString(),
-                                    Jumlah.getText().toString(),Jenis.getText().toString(),Keterangan.getText().toString());
-                        }else{
-                            model = new Model(id,Deskripsi.getText().toString(),Tanggal.getText().toString(),
-                                    Tipe.getText().toString(),Kategori.getText().toString(),
-                                    Jumlah.getText().toString(),"Pribadi",Keterangan.getText().toString());
-                        }
+                        model = new Model(id,Deskripsi.getText().toString(),Tanggal.getText().toString(),
+                                Tipe.getText().toString(),Kategori.getText().toString(),
+                                Jumlah.getText().toString(),Jenis.getText().toString(),Keterangan.getText().toString());
                         dbHelper.InsertData(model);
                         Toast.makeText(InputActivity.this,"Data Berhasil Ditambahkan",Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(InputActivity.this,UtamaActivity.class);
