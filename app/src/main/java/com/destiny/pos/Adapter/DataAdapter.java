@@ -15,8 +15,6 @@ import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.destiny.pos.InputActivity;
 import com.destiny.pos.Model.Model;
 import com.destiny.pos.R;
